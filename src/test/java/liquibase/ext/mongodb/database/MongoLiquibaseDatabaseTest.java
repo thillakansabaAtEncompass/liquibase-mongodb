@@ -4,6 +4,7 @@ import liquibase.CatalogAndSchema;
 import liquibase.configuration.LiquibaseConfiguration;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.ObjectQuotingStrategy;
+import liquibase.database.jvm.JdbcConnection;
 import liquibase.ext.mongodb.configuration.MongoConfiguration;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterEach;
@@ -113,7 +114,7 @@ class MongoLiquibaseDatabaseTest {
     void getPriority() {
         assertThat(database.getPriority())
                 .isEqualTo(PRIORITY_DATABASE)
-        .isEqualTo(5);
+                .isEqualTo(5);
     }
 
     @Test
@@ -162,4 +163,21 @@ class MongoLiquibaseDatabaseTest {
                 .containsExactly("catalog1", "catalog1");
     }
 
+    @SneakyThrows
+    @Test
+    void isCorrectDatabaseImplementation() {
+        assertThat(database.isCorrectDatabaseImplementation(null)).isFalse();
+        assertThat(database.isCorrectDatabaseImplementation(new JdbcConnection())).isFalse();
+        assertThat(database.isCorrectDatabaseImplementation(new MongoConnection())).isTrue();
+    }
+
+    @SneakyThrows
+    @Test
+    void findCorrectDatabaseImplementation() {
+        final MongoConnection connection = new MongoConnection();
+        final MongoLiquibaseDatabase database =
+                (MongoLiquibaseDatabase) DatabaseFactory.getInstance().findCorrectDatabaseImplementation(connection);
+        assertThat(database).isNotNull();
+        assertThat(database.getConnection()).isEqualTo(connection);
+    }
 }

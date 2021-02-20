@@ -318,7 +318,7 @@ public abstract class AbstractNoSqlDatabase extends AbstractJdbcDatabase impleme
 
     @Override
     public boolean isCorrectDatabaseImplementation(final DatabaseConnection conn) throws DatabaseException {
-        return getDatabaseProductName().equals(conn.getDatabaseProductName());
+        return conn instanceof AbstractNoSqlConnection && getDatabaseProductName().equals(conn.getDatabaseProductName());
     }
 
     @Override
