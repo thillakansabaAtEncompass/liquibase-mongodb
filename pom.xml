@@ -44,6 +44,7 @@
         <mockito-junit-jupiter.version>3.9.0</mockito-junit-jupiter.version>
         <mongodb-driver.version>4.2.3</mongodb-driver.version>
         <!--mongodb-driver.version>3.12.7</mongodb-driver.version-->
+        <postgresql.version>42.2.19</postgresql.version>
         <lombok.version>1.18.20</lombok.version>
         <hamcrest.version>1.3</hamcrest.version>
         <assertj.version>3.19.0</assertj.version>
@@ -118,11 +119,10 @@
             <version>${jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.2.19</version>
+            <version>${postgresql.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

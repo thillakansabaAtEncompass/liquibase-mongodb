@@ -1,10 +1,10 @@
-package liquibase.ext.mongodb.executor;
+package liquibase.nosql.executor;
 
 /*-
  * #%L
  * Liquibase MongoDB Extension
  * %%
- * Copyright (C) 2019 Mastercard
+ * Copyright (C) 2021 Mastercard
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -20,16 +20,30 @@ package liquibase.ext.mongodb.executor;
  * #L%
  */
 
-import liquibase.ext.AbstractMongoIntegrationTest;
-import liquibase.nosql.executor.NoSqlExecutor;
+import liquibase.Scope;
+import liquibase.database.core.PostgresDatabase;
+import liquibase.executor.Executor;
+import liquibase.executor.ExecutorService;
+import liquibase.executor.jvm.JdbcExecutor;
+import liquibase.ext.mongodb.database.MongoLiquibaseDatabase;
 import org.junit.jupiter.api.Test;
 
+import static liquibase.nosql.executor.NoSqlExecutor.EXECUTOR_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class NoSqlExecutorIT extends AbstractMongoIntegrationTest {
+class NoSqlExecutorTest {
 
     @Test
     void testGetInstance() {
+        final PostgresDatabase postgresDatabase = new PostgresDatabase();
+        Executor executor = Scope.getCurrentScope().getSingleton(ExecutorService.class).getExecutor(EXECUTOR_NAME, postgresDatabase);
+
+        assertThat(executor).isNotNull()
+                .isInstanceOfAny(JdbcExecutor.class);
+
+        final MongoLiquibaseDatabase mongoDatabase = new MongoLiquibaseDatabase();
+        executor = Scope.getCurrentScope().getSingleton(ExecutorService.class).getExecutor(EXECUTOR_NAME, mongoDatabase);
+
         assertThat(executor).isNotNull()
                 .isInstanceOfAny(NoSqlExecutor.class);
     }
@@ -51,15 +65,7 @@ class NoSqlExecutorIT extends AbstractMongoIntegrationTest {
     }
 
     @Test
-    void queryForLong1() {
-    }
-
-    @Test
     void queryForInt() {
-    }
-
-    @Test
-    void queryForInt1() {
     }
 
     @Test
@@ -67,31 +73,11 @@ class NoSqlExecutorIT extends AbstractMongoIntegrationTest {
     }
 
     @Test
-    void queryForList1() {
-    }
-
-    @Test
-    void queryForList2() {
-    }
-
-    @Test
-    void queryForList3() {
-    }
-
-    @Test
     void execute() {
     }
 
     @Test
-    void execute1() {
-    }
-
-    @Test
     void update() {
-    }
-
-    @Test
-    void update1() {
     }
 
     @Test

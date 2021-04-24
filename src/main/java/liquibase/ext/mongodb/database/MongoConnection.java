@@ -105,6 +105,12 @@ public class MongoConnection extends AbstractNoSqlConnection {
         }
     }
 
+    @Override
+    public boolean supports(final Driver driverObject) {
+        return nonNull(driverObject)
+                && driverObject instanceof MongoClientDriver;
+    }
+
     private String injectCredentials(final String url, final Properties driverProperties) {
 
         if (nonNull(driverProperties)) {

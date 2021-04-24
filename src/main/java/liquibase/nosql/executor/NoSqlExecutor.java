@@ -69,6 +69,11 @@ public class NoSqlExecutor extends AbstractExecutor {
         return PRIORITY_SPECIALIZED;
     }
 
+    @Override
+    public boolean supports(final Database database) {
+        return database instanceof AbstractNoSqlDatabase;
+    }
+
     @SuppressWarnings("unchecked")
     protected <C extends AbstractNoSqlConnection> C getConnection() {
         return (C) ofNullable(database)
